@@ -12,6 +12,16 @@ import CampsiteInfo from './CampsiteInfoComponent';
 import Directory from './DirectoryComponent';
 import Home from './HomeComponent';
 
+import { connect } from 'react-redux';
+import { fetchCampsites, fetchComments, fetchPromotions, fetchPartners } from '../redux/ActionCreators'
+
+const mapDispatchToProps = {
+    fetchCampsites,
+    fetchComments,
+    fetchPromotions,
+    fetchPartners
+};
+
 const CustomDrawerContentComponent = props => (
     <ScrollView>
         <SafeAreaView
@@ -199,6 +209,13 @@ const AppNavigator = createAppContainer(MainNavigator);
 
 class Main extends Component {
 
+    componentDidMount() {
+        this.props.fetchCampsites();
+        this.props.fetchComments();
+        this.props.fetchPartners();
+        this.props.fetchPromotions();
+    }
+
     render() {
         return (
             <View style={{
@@ -237,7 +254,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#fff',
         fontSize: 24
-    }
+    },
+
 });
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);
