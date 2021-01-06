@@ -15,6 +15,8 @@ import Home from './HomeComponent';
 import { connect } from 'react-redux';
 import { fetchCampsites, fetchComments, fetchPromotions, fetchPartners } from '../redux/ActionCreators'
 
+import Reservation from './ReservationComponent';
+
 const mapDispatchToProps = {
     fetchCampsites,
     fetchComments,
@@ -41,6 +43,29 @@ const CustomDrawerContentComponent = props => (
         </SafeAreaView>
     </ScrollView>
 )
+const ReservationNavigator = createStackNavigator(
+    {
+        Reservation: { screen: Reservation },
+    },
+    {
+        defaultNavigationOptions: ({ navigation }) => ({
+            headerStyle: {
+                backgroundColor: '#5637DD'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            },
+            headerLeft: <Icon
+                name='tree'
+                type='font-awesome'
+                iconStyle={styles.stackIcon}
+                onPress={() => navigation.toggleDrawer()}
+            />
+        })
+    }
+);
+
 
 const DirectoryNavigator = createStackNavigator(
     {
@@ -170,6 +195,19 @@ const MainNavigator = createDrawerNavigator(
                 )
             }
         },
+        Reservation: {
+            screen: ReservationNavigator,
+            navigationOptions: {
+                drawerIcon: ({ tintColor }) => (
+                    <Icon
+                        name='tree'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            }
+        },
         About: {
             screen: AboutNavigator,
             navigationOptions: {
@@ -196,6 +234,7 @@ const MainNavigator = createDrawerNavigator(
                 )
             }
         },
+
     },
     {
         drawerBackgroundColor: '#CEC8FF',
