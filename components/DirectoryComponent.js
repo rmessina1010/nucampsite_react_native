@@ -4,6 +4,7 @@ import { Tile } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 
 const mapStateToProps = state => {
@@ -50,13 +51,14 @@ class Directory extends Component {
         }
 
         return (
+            <Animatable.View animation="fadeInRightBig" duration={2000}>
+                <FlatList
+                    data={this.props.campsites.campsites}
+                    renderItem={renderDirectoryItem}
+                    keyExtractor={item => item.id.toString()}
 
-            <FlatList
-                data={this.props.campsites.campsites}
-                renderItem={renderDirectoryItem}
-                keyExtractor={item => item.id.toString()}
-
-            />
+                />
+            </Animatable.View>
         );
 
     }
