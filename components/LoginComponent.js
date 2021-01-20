@@ -133,11 +133,7 @@ class RegisterTab extends Component {
             lastName: '',
             email: '',
             remember: false,
-            imageURL: baseUrl + 'images/logo.png'
-
-
-
-
+            imageUrl: baseUrl + 'images/logo.png'
         }
     }
 
@@ -151,7 +147,21 @@ class RegisterTab extends Component {
             />
         )
     }
+    getImageFromCamera = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (cameraRollPermission.status === 'granted' && cameraPermission.status === 'granted') {
+            const capturedImage = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [1, 1]
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.setState({ imageUrl: capturedImage.uri });
+            }
+        }
 
+    }
     handleRegister() {
         if (this.state.remember) {
             console.log(JSON.stringify(this.state));
@@ -171,7 +181,19 @@ class RegisterTab extends Component {
 
         return (
             <ScrollView>
+
                 <View style={styles.container} >
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{ uri: this.state.imageUrl }}
+                            loadingIndicatorSource={require('./images/logo.png')}
+                            style={styles.image}
+                        />
+                        <Button
+                            title='Camera'
+                            onPress={this.getImageFromCamera}
+                        />
+                    </View>
                     <Input
                         placeholder="Username"
                         leftIcon={{ type: 'font-awesome', name: 'user-o' }}
@@ -266,7 +288,9 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     formInput: {
-        padding: 8
+        padding: 8,
+        marginBottom: -5
+
     },
     formCheckbox: {
         margin: 8,
