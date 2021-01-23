@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import Contact from './ContactComponent';
-import About from './ AboutComponent';
+import About from './AboutComponent';
 import CampsiteInfo from './CampsiteInfoComponent';
 import Directory from './DirectoryComponent';
 import Home from './HomeComponent';
