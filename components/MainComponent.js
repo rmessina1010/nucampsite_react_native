@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Platform, StyleSheet, Text, ScrollView, Image, Alert, ToastAndroid } from 'react-native';
-import NetInfo from '@react-native-community/netinfo'
+import NetInfo from '@react-native-community/netinfo';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
@@ -334,20 +334,23 @@ class Main extends Component {
         this.props.fetchComments();
         this.props.fetchPartners();
         this.props.fetchPromotions();
-
-        NetInfo.fetch().then(
-            connectionInfo => {
-                (Platform.OS === 'ios') ?
-                    Alert.alert("Initial Network Connectivity Type:", connectionInfo.type)
-                    : ToastAndroid.show("Initial Network Connectivity Type:" + connectionInfo.type, ToastAndroid.LONG)
-            })
-        this.unsubscribeNetInfo = NetInfo.addEventListener(connectionInfo => {
-            this.handleConnectivityChange(connectionInfo);
-        });
+        this.showNetInfo();
     }
 
     componentWillUnmount() {
         this.unsubscribeNetInfo();
+    }
+
+    showNetInfo = async () => {
+        const connectionInfo = await NetInfo.fetch();
+
+        (Platform.OS === 'ios') ?
+            Alert.alert("Initial Network Connectivity Type:", connectionInfo.type)
+            : ToastAndroid.show("Initial Network Connectivity Type:" + connectionInfo.type, ToastAndroid.LONG);
+
+        this.unsubscribeNetInfo = NetInfo.addEventListener(connectionInfo => {
+            this.handleConnectivityChange(connectionInfo);
+        });
     }
 
     handleConnectivityChange = connectionInfo => {
